@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:meal_app/models/meal.dart';
 
 class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({super.key, required this.meal});
+  const MealDetailsScreen(
+      {super.key, required this.meal, required this.onToggleFavorite});
 
   final Meal meal;
+  final void Function(Meal meal) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(meal.title),
-      ),
-
+      appBar: AppBar(title: Text(meal.title), actions: [
+        IconButton(
+          onPressed: () {
+            onToggleFavorite(meal);
+          },
+          icon: const Icon(Icons.star),
+        ),
+      ]),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -22,42 +28,43 @@ class MealDetailsScreen extends StatelessWidget {
               width: double.infinity,
               fit: BoxFit.cover,
             ),
-            const SizedBox(height: 14,),
-            Text(
-              'ingredents',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.bold
-              )
+            const SizedBox(
+              height: 14,
             ),
-          const SizedBox(height: 14,),
-            for(final ingredent in meal.ingredients)
-             Text(ingredent,
-             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
-              )),
-
-               const SizedBox(height: 14,),
-            Text(
-              'steps',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.bold
-              )
+            Text('ingredents',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(
+              height: 14,
             ),
-          const SizedBox(height: 14,),
-            for(final step in meal.steps)
-             Padding(
-               padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-               ),
-               child: Text(step,
-               textAlign: TextAlign.justify,
-               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                )),
-             )
+            for (final ingredent in meal.ingredients)
+              Text(ingredent,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      )),
+            const SizedBox(
+              height: 14,
+            ),
+            Text('steps',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(
+              height: 14,
+            ),
+            for (final step in meal.steps)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                child: Text(step,
+                    textAlign: TextAlign.justify,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
+              )
           ],
         ),
       ),
