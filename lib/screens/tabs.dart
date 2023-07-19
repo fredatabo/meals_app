@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/screens/categories.dart';
+import 'package:meal_app/screens/filters.dart';
 import 'package:meal_app/screens/meals.dart';
 import 'package:meal_app/models/meal.dart';
+import 'package:meal_app/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
+  //const TabsScreen({super.key, required this.onSelectScreen});
+
   const TabsScreen({super.key});
 
+ // final void Function(String identfier) onSelectScreen;
   @override
   State<TabsScreen> createState() => _TabsScreenState();
 }
@@ -35,7 +40,7 @@ class _TabsScreenState extends State<TabsScreen> {
       setState(() {
         _favoriteMeals.add(meal);
       });
-       _showInfoMessage('meal marked as favorite');
+      _showInfoMessage('meal marked as favorite');
     }
   }
 
@@ -43,6 +48,18 @@ class _TabsScreenState extends State<TabsScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
+  }
+
+  void _setScreen(String identifier) {
+    Navigator.of(context).pop();
+    if (identifier == 'filters') {
+
+      //note push enables you to go back, but push replacement replaces the whole screen
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (ctx) => const FilterScreen()));
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -62,6 +79,9 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(activePageTitle),
+      ),
+      drawer: MainDrawer(
+        onSelectScreen: _setScreen,
       ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
